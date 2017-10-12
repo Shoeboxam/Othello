@@ -1,33 +1,32 @@
 package com.shoemate;
 
-import com.shoemate.Players.Computer;
-import com.shoemate.Players.Person;
-import com.shoemate.Players.Player;
+import com.shoemate.players.Computer;
+import com.shoemate.players.Person;
+import com.shoemate.players.Player;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class Game {
+
+    private Scanner scan = new Scanner(System.in);
 
     private static int iteration = 0;
     private Player[] players;
     private Board gameboard;
-    private boolean allowDiagonal;
+    private boolean allowDiagonal = false;
 
     public Game() {
-
-        // ~~~~~ Game Settings ~~~~~
-        boolean accepted = false;
-
-        int width = getInt("Board width: ");
-        int height = getInt("Board height: ");
-
-        int numPeople = 0;
-        int numComputers = 0;
-
-        // ~~~~~ Variable Initialization ~~~~~
+        // Initialize boards
+        int width = getInt("Board width: ", (a) -> a>0, "Width must be positive.");
+        int height = getInt("Board height: ", (a) -> a>0, "Height must be positive.");
+        gameboard = new Board(width, height);
 
         // Initialize players
+        int numPeople = getInt("Human players: ", (a) -> a>=0, "Human players must be non-negative.");
+        int numComputers =  getInt("Computer players: ", (a) -> a>=0, "Computer players must be non-negative.");
+
         Player[] temp = new Player[numPeople + numComputers];
         int idx = 0;
         for (; idx < numPeople; idx++) {
@@ -37,29 +36,35 @@ public class Game {
             temp[idx] = new Computer();
         }
         players = temp;
-
-        // Initialize board
-        gameboard = new Board(width, height);
     }
 
-    public void gameLoop() {
+    public void start() {
         iteration++;
+
         while (!gameboard.isFull()) {
-            players[iteration % players.length].play();
+            System.out.println(gameboard);
+
+            Player currentPlayer = players[iteration % players.length];
+            Player[][] view = gameboard.getView();
+
+            // Repeatedly ask for a play until a valid play is found
+            while (!gameboard.takeTurn(currentPlayer, currentPlayer.play(view), allowDiagonal));
         }
     }
 
-    private int getInt(String prompt, Callable<T> condition) {
-        Scanner scan = new Scanner(System.in);
-        boolean accepted = false;
-
-        while (!accepted) {
+    private int getInt(String prompt, Function<Integer, Boolean> check, String promptFail) {
+        while (true) {
             try {
                 System.out.print(prompt);
-                scan.nextInt();
-                accepted = true;
+                int candidate = scan.nextInt();
+
+                if (check.apply(candidate)) {
+                    return candidate;
+                } else {
+                    System.out.println(promptFail);
+                }
             } catch (InputMismatchException e) {
-                System.out.println("Please enter a numeric.");
+                System.out.println("Input must be a whole number. Try again.");
                 scan.next();
             }
         }
