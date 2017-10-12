@@ -1,7 +1,9 @@
 package com.shoemate.players;
 
+// The 'Unowned' player starts off owning all places.
 public class Unowned extends Player {
+
     public int[] play(Player[][] board) {
-        return new int[] {0, 0};
+        throw new RuntimeException("The unowned player should never get a chance to play!");
     }
 }

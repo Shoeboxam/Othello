@@ -39,8 +39,6 @@ public class Game {
     }
 
     public void start() {
-        iteration++;
-
         while (!gameboard.isFull()) {
             System.out.println(gameboard);
 
@@ -49,6 +47,7 @@ public class Game {
 
             // Repeatedly ask for a play until a valid play is found
             while (!gameboard.takeTurn(currentPlayer, currentPlayer.play(view), allowDiagonal));
+            iteration++;
         }
     }
 
