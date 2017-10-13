@@ -21,6 +21,7 @@ public class Game {
         // Initialize boards
         int width = getInt("Board width: ", (a) -> a>0, "Width must be positive.");
         int height = getInt("Board height: ", (a) -> a>0, "Height must be positive.");
+
         gameboard = new Board(width, height);
 
         // Initialize players
@@ -36,6 +37,7 @@ public class Game {
             temp[idx] = new Computer();
         }
         players = temp;
+        gameboard.playerInit(players);
     }
 
     public void start() {
