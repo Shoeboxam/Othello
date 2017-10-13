@@ -84,8 +84,8 @@ public class Logic {
     }
 
     private boolean exists(Player[][] boardData, int[] tile) {
-        if (tile[0] < 0 || tile[0] >= boardData[0].length) return false;
-        if (tile[1] < 0 || tile[1] >= boardData.length) return false;
+        if (tile[0] < 0 || tile[0] >= boardData.length) return false;
+        if (tile[1] < 0 || tile[1] >= boardData[1].length) return false;
 
         return true;
     }

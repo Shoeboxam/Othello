@@ -35,7 +35,7 @@ public class Board {
 
     protected boolean takeTurn(Player player, int[] tile, boolean allowDiagonal) {
         if (logic.isValid(boardData, player, tile, allowDiagonal)) {
-            System.out.println(Integer.toString(tile[0])+  ", " + Integer.toString(tile[1]));
+//            System.out.println(Integer.toString(tile[0])+  ", " + Integer.toString(tile[1]));
             boardData = logic.setTile(boardData, player, tile, allowDiagonal);
             return true;
         } else {
