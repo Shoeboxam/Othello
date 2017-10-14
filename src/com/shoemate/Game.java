@@ -24,6 +24,8 @@ public class Game {
         int width = getInt("Board width: ", (a) -> a>0, "Width must be positive.");
         int height = getInt("Board height: ", (a) -> a>0, "Height must be positive.");
 
+        allowDiagonal = getInt("Game Mode\n 1. Standard\n 2. Diagonal\nSelection: ", (a) -> a==1 || a==2, "Please enter a menu option: {1, 2}") == 2;
+
         gameboard = new Board(width, height);
 
         // Initialize players
@@ -33,10 +35,10 @@ public class Game {
         int numPlayers = 0;
         System.out.println("Select up to eight players.");
         while ((addPlayers || numPlayers < 2) && numPlayers < 8) {
-            System.out.println("1. Add human            (Player " + Integer.toString(numPlayers + 1) + ")");
-            System.out.println("2. Add greedy computer  (AI " + Integer.toString(numPlayers + 1) + ")");
-            System.out.println("3. Add random computer  (AI " + Integer.toString(numPlayers + 1) + ")");
-            System.out.println("4. Start game!");
+            System.out.println(" 1. Add human            (Player " + Integer.toString(numPlayers + 1) + ")");
+            System.out.println(" 2. Add greedy computer  (AI " + Integer.toString(numPlayers + 1) + ")");
+            System.out.println(" 3. Add random computer  (AI " + Integer.toString(numPlayers + 1) + ")");
+            System.out.println(" 4. Start game!");
             int selection = getInt("Selection: ", (a) -> a>=0 && a <=4, "Please enter a menu option: {1, 2, 3, 4}");
 
             if (selection == 1) {
@@ -74,7 +76,7 @@ public class Game {
             currentPlayer = players[iteration % players.length];
             System.out.println();
 
-        } while (!gameboard.isFull(currentPlayer));
+        } while (!gameboard.isFull(currentPlayer, allowDiagonal));
 
         System.out.println("---- Game Over ----");
         System.out.println(gameboard);

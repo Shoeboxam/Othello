@@ -38,9 +38,9 @@ public class Logic {
         }
 
         if (allowDiagonal) {
-            for (int[] offset : cardinalOffset) {
+            for (int[] offset : diagonalOffset) {
                 int[] neighbor = new int[] {play[0] + offset[0], play[1] + offset[1]};
-                if (!(boardData[neighbor[0]][neighbor[1]] instanceof Unowned)) hasNeighbor = true;
+                if (exists(boardData, neighbor) && !(boardData[neighbor[0]][neighbor[1]] instanceof Unowned)) hasNeighbor = true;
             }
         }
         if (!hasNeighbor && debug) {

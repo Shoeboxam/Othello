@@ -32,10 +32,10 @@ public class Board {
         }
     }
 
-    public boolean isFull(Player player) {
-        for (int i = 0; i < boardData.length; i++) {
+    public boolean isFull(Player player, boolean allowDiagonal) {
+        for (int i=0; i < boardData.length; i++) {
             for (int j=0; j < boardData[0].length; j++) {
-                if (logic.isValid(boardData, player, new int[] {i, j}, false, false)) {
+                if (logic.isValid(boardData, player, new int[] {i, j}, allowDiagonal, false)) {
                     return false;
                 }
             }
