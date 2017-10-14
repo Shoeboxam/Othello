@@ -10,7 +10,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.function.Function;
 
-public class Game {
+class Game {
 
     private Scanner scan = new Scanner(System.in);
 
@@ -20,7 +20,7 @@ public class Game {
     private Board gameboard;
     private boolean allowDiagonal;
 
-    public Game() {
+    Game() {
         // Handle user preferences
         allowDiagonal = getInt("Game Mode\n 1. Standard\n 2. Diagonal\nSelection: ",
                 (a) -> a==1 || a==2, "Please enter a menu option: {1, 2}") == 2;
@@ -71,7 +71,7 @@ public class Game {
         }
     }
 
-    public void start() {
+    void start() {
         Player currentPlayer = players[0];
 
         do {

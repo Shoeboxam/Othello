@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class Board {
+class Board {
     private Player[][] boardData;
     private static Unowned unowned = new Unowned();
 
-    public Board(int width, int height) {
+    Board(int width, int height) {
         // initialize with all tiles unowned
         Player[][] temp = new Player[width][height];
         for (int i = 0; i < width; i++) {
@@ -23,7 +23,7 @@ public class Board {
     }
 
     // place starting pieces at center of board
-    public boolean playerInit(Player[] players) {
+    boolean playerInit(Player[] players) {
 
         // If there is an attempt to index outside of the board, raise an alert
         try {
@@ -46,7 +46,7 @@ public class Board {
     }
 
     // Check if player can place tiles
-    public boolean isFull(Player player, boolean allowDiagonal) {
+    boolean isFull(Player player, boolean allowDiagonal) {
         for (int i=0; i < boardData.length; i++) {
             for (int j=0; j < boardData[0].length; j++) {
                 if (Logic.isValid(boardData, player, new int[] {i, j}, allowDiagonal, false)) {
@@ -57,7 +57,7 @@ public class Board {
         return true;
     }
 
-    public boolean takeTurn(Player player, int[] tile, boolean allowDiagonal) {
+    boolean takeTurn(Player player, int[] tile, boolean allowDiagonal) {
         // If game rules are not violated, then place the tile
         if (Logic.setTile(boardData, player, tile, allowDiagonal)) {
             System.out.println("Success: " + player.toString() + " move at (" + Integer.toString(tile[0])+  ", " + Integer.toString(tile[1]) + ")");
@@ -68,7 +68,7 @@ public class Board {
 
     // Players don't actually have access to edit the gameboard; they may only submit their play
     // Nevertheless, players need to be able to see the board. This gives a readable copy of the game state
-    public Player[][] getView() {
+    Player[][] getView() {
         Player[][] view = new Player[boardData.length][];
         for (int i = 0; i < boardData.length; i++) view[i] = boardData[i].clone();
         return view;
@@ -94,7 +94,7 @@ public class Board {
         return whole.toString();
     }
 
-    public String getScore(Player[] players) {
+    String getScore(Player[] players) {
         // Scoreboard initialization
         HashMap<Player, Integer> scoreboard = new HashMap<>();
         for (Player player : players) {

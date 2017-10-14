@@ -5,7 +5,7 @@ public abstract class Player implements Comparable {
     static private String[] colorOptions = new String[] {"_unowned", "Black", "White", "Orange", "Green", "Yellow", "Purple", "Red", "Taupe"};
     private String color;
 
-    public Player() {
+    Player() {
         color = colorOptions[numPlayers++];
     }
 

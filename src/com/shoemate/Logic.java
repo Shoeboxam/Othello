@@ -112,7 +112,7 @@ public class Logic {
 
     // Helper function to determine initial positioning of player tokens
     // Allows game init to handle 3+ players gracefully
-    public static int[][] spiralOffsets(int length) {
+    static int[][] spiralOffsets(int length) {
         int[][] offsets = new int[length][2];
 
         int elem = 0;
