@@ -21,12 +21,11 @@ public class Game {
 
     public Game() {
         // Handle user preferences
-        int width = getInt("Board width: ", (a) -> a>0, "Width must be positive.");
-        int height = getInt("Board height: ", (a) -> a>0, "Height must be positive.");
-
         allowDiagonal = getInt("Game Mode\n 1. Standard\n 2. Diagonal\nSelection: ",
                 (a) -> a==1 || a==2, "Please enter a menu option: {1, 2}") == 2;
 
+        int width = getInt("Board width: ", (a) -> a>0, "Width must be positive.");
+        int height = getInt("Board height: ", (a) -> a>0, "Height must be positive.");
         gameboard = new Board(width, height);
 
         // Initialize players
@@ -50,20 +49,25 @@ public class Game {
 
             if (selection == 1) {
                 temp[numPlayers] = new Person();
+                numPlayers++;
             } else if (selection == 2) {
                 temp[numPlayers] = new AI_Greedy();
+                numPlayers++;
             } else if (selection == 3) {
                 temp[numPlayers] = new AI_Random();
+                numPlayers++;
             } else if (selection == 4) {
                 addPlayers = false;
             }
-            numPlayers++;
         }
+        players = Arrays.copyOfRange(temp, 0, numPlayers).clone();
 
-        players = Arrays.copyOfRange(temp, 0, numPlayers - 1).clone();
-
-        // Place starting elements in center of board
-        gameboard.playerInit(players);
+        // Initialize game board, fall back to new size if necessary
+        while (!gameboard.playerInit(players)) {
+            width = getInt("Board width: ", (a) -> a>0, "Width must be positive.");
+            height = getInt("Board height: ", (a) -> a>0, "Height must be positive.");
+            gameboard = new Board(width, height);
+        }
     }
 
     public void start() {

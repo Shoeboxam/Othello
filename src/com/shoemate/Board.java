@@ -24,13 +24,22 @@ public class Board {
     }
 
     // place starting pieces at center of board
-    public void playerInit(Player[] players) {
-        int[] origin = new int[] { (boardData.length - 1) / 2, (boardData[0].length - 1) / 2};
-        int startingTokens = players.length * 2;
-        int[][] offsets = logic.spiralOffsets(startingTokens);
+    public boolean playerInit(Player[] players) {
+        try {
+            int[] origin = new int[] { (boardData.length - 1) / 2, (boardData[0].length - 1) / 2};
+            int startingTokens = players.length * 2;
+            int[][] offsets = logic.spiralOffsets(startingTokens);
 
-        for (int i=0; i < startingTokens; i++) {
-            boardData[origin[0] + offsets[i][0]][origin[1] + offsets[i][1]] = players[i % players.length];
+            for (int i=0; i < startingTokens; i++) {
+                boardData[origin[0] + offsets[i][0]][origin[1] + offsets[i][1]] = players[i % players.length];
+            }
+            return true;
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("A " + Integer.toString(boardData.length) + "x" + Integer.toString(boardData[0].length) +
+                    " game board is too small for " + Integer.toString(players.length) + " players.");
+
+            return false;
         }
     }
 

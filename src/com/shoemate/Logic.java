@@ -126,9 +126,13 @@ public class Logic {
                     }
                     if (elem == length) return offsets;
                 }
-                cursor[0] += cardinalOffset[(card + 1) % 4][0];
-                cursor[1] += cardinalOffset[(card + 1) % 4][1];
+                if (card != 3) {
+                    cursor[0] += cardinalOffset[(card + 1) % 4][0];
+                    cursor[1] += cardinalOffset[(card + 1) % 4][1];
+                }
             }
+            cursor[0] += cardinalOffset[3][0];
+            cursor[1] += cardinalOffset[3][1];
             layer++;
         }
     }

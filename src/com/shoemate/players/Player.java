@@ -2,7 +2,7 @@ package com.shoemate.players;
 
 public abstract class Player implements Comparable {
     static private int numPlayers = 0;
-    static private String[] colorOptions = new String[] {"_unowned", "Black", "White", "Orange", "Green", "Yellow", "Purple", "Grey", "Taupe"};
+    static private String[] colorOptions = new String[] {"_unowned", "Black", "White", "Orange", "Green", "Yellow", "Purple", "Red", "Taupe"};
     private String color;
 
     public Player() {

@@ -1,6 +1,6 @@
 package com.shoemate.players;
 
-// The 'Unowned' player starts off owning all places.
+// The 'Unowned' player starts off owning all tiles.
 public class Unowned extends Player {
 
     public int[] play(Player[][] board, boolean allowDiagonal) {
