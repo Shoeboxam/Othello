@@ -2,7 +2,7 @@ package com.shoemate.players;
 
 public abstract class Player implements Comparable {
     static private int numPlayers = 0;
-    static private String[] colorOptions = new String[] {"_void", "Black", "White", "Orange", "Green", "Yellow", "Purple", "Grey", "Taupe"};
+    static private String[] colorOptions = new String[] {"_unowned", "Black", "White", "Orange", "Green", "Yellow", "Purple", "Grey", "Taupe"};
     private String color;
 
     public Player() {
@@ -13,7 +13,7 @@ public abstract class Player implements Comparable {
         return Character.toString(color.charAt(0));
     }
 
-    public abstract int[] play(Player[][] board);
+    public abstract int[] play(Player[][] board, boolean allowDiagonal);
     public String toString() {
         return this.color;
     }

@@ -6,7 +6,7 @@ public class Person extends Player {
 
     private Scanner scan = new Scanner(System.in);
 
-    public int[] play(Player[][] boardView) {
+    public int[] play(Player[][] boardView, boolean allowDiagonal) {
         return new int[] {
             getInt("X: ", (a) -> a > 0 && a <= boardView.length, "Selection must be within board width. Try again.") - 1,
             getInt("Y: ", (a) -> a > 0 && a <= boardView[0].length, "Selection must be within board height. Try again.") - 1

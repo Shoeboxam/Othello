@@ -1,5 +1,6 @@
 package com.shoemate;
 
+import com.shoemate.players.AI_Random;
 import com.shoemate.players.Computer;
 import com.shoemate.players.Person;
 import com.shoemate.players.Player;
@@ -33,8 +34,8 @@ public class Game {
         for (; idx < numPeople; idx++) {
             temp[idx] = new Person();
         }
-        for (; idx < numComputers; idx++) {
-            temp[idx] = new Computer();
+        for (; idx < numComputers + numPeople; idx++) {
+            temp[idx] = new AI_Random();
         }
         players = temp;
         gameboard.playerInit(players);
@@ -50,7 +51,7 @@ public class Game {
             Player[][] view = gameboard.getView();
 
             // Repeatedly ask for a play until a valid play is found
-            while (!gameboard.takeTurn(currentPlayer, currentPlayer.play(view), allowDiagonal));
+            while (!gameboard.takeTurn(currentPlayer, currentPlayer.play(view, allowDiagonal), allowDiagonal));
 
             // Increment player
             iteration++;
