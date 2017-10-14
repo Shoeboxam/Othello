@@ -16,8 +16,9 @@ public class Game {
 
     private static int iteration = 0;
     private Player[] players;
+
     private Board gameboard;
-    private boolean allowDiagonal = false;
+    private boolean allowDiagonal;
 
     public Game() {
         // Handle user preferences

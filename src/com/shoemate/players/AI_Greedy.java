@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class AI_Greedy extends Player {
-    private Logic logic = new Logic();
 
     public int[] play(Player[][] view, boolean allowDiagonal) {
         // Collect all valid tiles in the candidates list
@@ -15,7 +14,7 @@ public class AI_Greedy extends Player {
 
         for (int i=0; i < view.length; i++) {
             for (int j=0; j < view[0].length; j++) {
-                if (logic.isValid(view, this, new int[] {i, j}, allowDiagonal, false)) {
+                if (Logic.isValid(view, this, new int[] {i, j}, allowDiagonal, false)) {
                     full_candidates[numCandidates++] = new int[] {i, j};
                 }
             }
@@ -35,7 +34,7 @@ public class AI_Greedy extends Player {
             for(int j = 0; j < view.length; j++) copy[j] = view[j].clone();
 
             // Modify a copy of the view of the board to determine what the board would look like if chosen
-            logic.setTile(copy, this, candidates[i], allowDiagonal);
+            Logic.setTile(copy, this, candidates[i], allowDiagonal);
 
             // Replace choice if candidate has better fitness
             int candidate_fitness = getFitness(copy);

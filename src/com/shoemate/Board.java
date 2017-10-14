@@ -10,7 +10,6 @@ import java.util.Map;
 public class Board {
     private Player[][] boardData;
     private static Unowned unowned = new Unowned();
-    private Logic logic = new Logic();
 
     public Board(int width, int height) {
         // initialize with all tiles unowned
@@ -25,10 +24,13 @@ public class Board {
 
     // place starting pieces at center of board
     public boolean playerInit(Player[] players) {
+
+        // If there is an attempt to index outside of the board, raise an alert
         try {
+            // Starting at the origin, add offsets for each initial tile
             int[] origin = new int[] { (boardData.length - 1) / 2, (boardData[0].length - 1) / 2};
             int startingTokens = players.length * 2;
-            int[][] offsets = logic.spiralOffsets(startingTokens);
+            int[][] offsets = Logic.spiralOffsets(startingTokens);
 
             for (int i=0; i < startingTokens; i++) {
                 boardData[origin[0] + offsets[i][0]][origin[1] + offsets[i][1]] = players[i % players.length];
@@ -43,11 +45,11 @@ public class Board {
         }
     }
 
-    // check if player can place tiles
+    // Check if player can place tiles
     public boolean isFull(Player player, boolean allowDiagonal) {
         for (int i=0; i < boardData.length; i++) {
             for (int j=0; j < boardData[0].length; j++) {
-                if (logic.isValid(boardData, player, new int[] {i, j}, allowDiagonal, false)) {
+                if (Logic.isValid(boardData, player, new int[] {i, j}, allowDiagonal, false)) {
                     return false;
                 }
             }
@@ -55,11 +57,9 @@ public class Board {
         return true;
     }
 
-    protected boolean takeTurn(Player player, int[] tile, boolean allowDiagonal) {
+    public boolean takeTurn(Player player, int[] tile, boolean allowDiagonal) {
         // If game rules are not violated, then place the tile
-        if (logic.isValid(boardData, player, tile, allowDiagonal, true)) {
-            boardData = logic.setTile(boardData, player, tile, allowDiagonal);
-
+        if (Logic.setTile(boardData, player, tile, allowDiagonal)) {
             System.out.println("Success: " + player.toString() + " move at (" + Integer.toString(tile[0])+  ", " + Integer.toString(tile[1]) + ")");
             return true;
         }
@@ -74,6 +74,7 @@ public class Board {
         return view;
     }
 
+    // Labeled view of board, with one character per tile
     public String toString() {
         StringBuilder whole = new StringBuilder();
 

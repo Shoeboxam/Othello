@@ -3,7 +3,6 @@ import com.shoemate.Logic;
 import java.util.Random;
 
 public class AI_Random extends Player {
-    private Logic logic = new Logic();
     private Random rand = new Random();
 
     public int[] play(Player[][] view, boolean allowDiagonal) {
@@ -13,7 +12,7 @@ public class AI_Random extends Player {
 
         for (int i=0; i < view.length; i++) {
             for (int j=0; j < view[0].length; j++) {
-                if (logic.isValid(view, this, new int[] {i, j}, allowDiagonal, false)) {
+                if (Logic.isValid(view, this, new int[] {i, j}, allowDiagonal, false)) {
                     candidates[numCandidates++] = new int[] {i, j};
                 }
             }
