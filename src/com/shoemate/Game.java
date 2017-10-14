@@ -20,11 +20,12 @@ public class Game {
     private boolean allowDiagonal = false;
 
     public Game() {
-        // Initialize boards
+        // Handle user preferences
         int width = getInt("Board width: ", (a) -> a>0, "Width must be positive.");
         int height = getInt("Board height: ", (a) -> a>0, "Height must be positive.");
 
-        allowDiagonal = getInt("Game Mode\n 1. Standard\n 2. Diagonal\nSelection: ", (a) -> a==1 || a==2, "Please enter a menu option: {1, 2}") == 2;
+        allowDiagonal = getInt("Game Mode\n 1. Standard\n 2. Diagonal\nSelection: ",
+                (a) -> a==1 || a==2, "Please enter a menu option: {1, 2}") == 2;
 
         gameboard = new Board(width, height);
 
@@ -33,13 +34,19 @@ public class Game {
 
         boolean addPlayers = true;
         int numPlayers = 0;
-        System.out.println("Select up to eight players.");
+        System.out.println("Select between two and eight players.");
         while ((addPlayers || numPlayers < 2) && numPlayers < 8) {
             System.out.println(" 1. Add human            (Player " + Integer.toString(numPlayers + 1) + ")");
             System.out.println(" 2. Add greedy computer  (AI " + Integer.toString(numPlayers + 1) + ")");
             System.out.println(" 3. Add random computer  (AI " + Integer.toString(numPlayers + 1) + ")");
-            System.out.println(" 4. Start game!");
-            int selection = getInt("Selection: ", (a) -> a>=0 && a <=4, "Please enter a menu option: {1, 2, 3, 4}");
+
+            int selection;
+            if (numPlayers < 2) {
+                selection = getInt("Selection: ", (a) -> a>=0 && a <=3, "Please enter a menu option: {1, 2, 3}");
+            } else {
+                System.out.println(" 4. Start game!");
+                selection = getInt("Selection: ", (a) -> a>=0 && a <=4, "Please enter a menu option: {1, 2, 3, 4}");
+            }
 
             if (selection == 1) {
                 temp[numPlayers] = new Person();
@@ -52,10 +59,10 @@ public class Game {
             }
             numPlayers++;
         }
-        System.out.println(temp[0]);
+
         players = Arrays.copyOfRange(temp, 0, numPlayers - 1).clone();
 
-        System.out.println(players[0]);
+        // Place starting elements in center of board
         gameboard.playerInit(players);
     }
 
@@ -76,6 +83,7 @@ public class Game {
             currentPlayer = players[iteration % players.length];
             System.out.println();
 
+            // End when board is full
         } while (!gameboard.isFull(currentPlayer, allowDiagonal));
 
         System.out.println("---- Game Over ----");
@@ -90,6 +98,7 @@ public class Game {
                 System.out.print(prompt);
                 int candidate = scan.nextInt();
 
+                // constraints are handled via a passed lambda function
                 if (check.apply(candidate)) {
                     return candidate;
                 } else {

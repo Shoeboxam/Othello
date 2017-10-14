@@ -9,15 +9,18 @@ public abstract class Player implements Comparable {
         color = colorOptions[numPlayers++];
     }
 
+    public abstract int[] play(Player[][] board, boolean allowDiagonal);
+
+    // The value displayed in the game board readout
     public String getKey() {
         return Character.toString(color.charAt(0));
     }
 
-    public abstract int[] play(Player[][] board, boolean allowDiagonal);
     public String toString() {
         return this.color;
     }
 
+    // Override comparable is used throughout game logic
     public boolean equals(Object other) {
         return other instanceof Player && getKey().equals(other.toString());
     }

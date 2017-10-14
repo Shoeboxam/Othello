@@ -17,6 +17,7 @@ public class Logic {
             new int[] {-1, 1},
             new int[] {1, 1}};
 
+    // Check if game rules are satisfied if a player attempts to act on a tile
     public boolean isValid(Player[][] boardData, Player player, int[] play, boolean allowDiagonal, boolean debug) {
         if (!(boardData[play[0]][play[1]] instanceof Unowned)) {
             if (debug) {
@@ -26,6 +27,8 @@ public class Logic {
         }
 
         boolean hasNeighbor = false;
+
+        // ---- Cardinal Neighbors ----
         for (int[] offset : cardinalOffset) {
             int[] neighbor = new int[] {play[0] + offset[0], play[1] + offset[1]};
             if (exists(boardData, neighbor) && boardData[neighbor[0]][neighbor[1]] == player){
@@ -37,12 +40,14 @@ public class Logic {
             if (exists(boardData, neighbor) && !(boardData[neighbor[0]][neighbor[1]] instanceof Unowned)) hasNeighbor = true;
         }
 
+        // ---- Diagonal Neighbors ----
         if (allowDiagonal) {
             for (int[] offset : diagonalOffset) {
                 int[] neighbor = new int[] {play[0] + offset[0], play[1] + offset[1]};
                 if (exists(boardData, neighbor) && !(boardData[neighbor[0]][neighbor[1]] instanceof Unowned)) hasNeighbor = true;
             }
         }
+
         if (!hasNeighbor && debug) {
             System.out.println("Tiles must be placed next to an opponents tile.");
         }
@@ -50,8 +55,10 @@ public class Logic {
     }
 
     public Player[][] setTile(Player[][] boardData, Player player, int[] tile, boolean allowDiagonal) {
+        // Assign tile
         boardData[tile[0]][tile[1]] = player;
 
+        // Assign all neighboring tiles to satisfy game rules
         for (int[] offset : cardinalOffset) {
             if (search(boardData, player, tile, offset)) {
                 replace(boardData, player, tile, offset);
@@ -69,6 +76,9 @@ public class Logic {
         return boardData;
     }
 
+    // RECURSIVE OPERATIONS
+    // search and replace acts on offsets until a matching element is found.
+    // For this game, the offsets passed always follow rows, columns or diagonals.
     private boolean search(Player[][] boardData, Player player, int[] tile, int[] offset) {
         int[] neighbor = new int[] {tile[0] + offset[0], tile[1] + offset[1]};
 
@@ -87,6 +97,7 @@ public class Logic {
         replace(boardData, player, neighbor, offset);
     }
 
+    // Sanity check to avoid indexing outside of the game board
     private boolean exists(Player[][] boardData, int[] tile) {
         if (tile[0] < 0 || tile[0] >= boardData.length) return false;
         if (tile[1] < 0 || tile[1] >= boardData[1].length) return false;
@@ -94,6 +105,8 @@ public class Logic {
         return true;
     }
 
+    // Helper function to determine initial positioning of player tokens
+    // Allows game init to handle 3+ players gracefully
     public int[][] spiralOffsets(int length) {
         int[][] offsets = new int[length][2];
 

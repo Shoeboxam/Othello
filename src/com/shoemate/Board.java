@@ -13,6 +13,7 @@ public class Board {
     private Logic logic = new Logic();
 
     public Board(int width, int height) {
+        // initialize with all tiles unowned
         Player[][] temp = new Player[width][height];
         for (int i = 0; i < width; i++) {
             for (int j=0; j < height; j++) {
@@ -22,6 +23,7 @@ public class Board {
         boardData = temp;
     }
 
+    // place starting pieces at center of board
     public void playerInit(Player[] players) {
         int[] origin = new int[] { (boardData.length - 1) / 2, (boardData[0].length - 1) / 2};
         int startingTokens = players.length * 2;
@@ -32,6 +34,7 @@ public class Board {
         }
     }
 
+    // check if player can place tiles
     public boolean isFull(Player player, boolean allowDiagonal) {
         for (int i=0; i < boardData.length; i++) {
             for (int j=0; j < boardData[0].length; j++) {
@@ -44,6 +47,7 @@ public class Board {
     }
 
     protected boolean takeTurn(Player player, int[] tile, boolean allowDiagonal) {
+        // If game rules are not violated, then place the tile
         if (logic.isValid(boardData, player, tile, allowDiagonal, true)) {
             boardData = logic.setTile(boardData, player, tile, allowDiagonal);
 
@@ -53,6 +57,8 @@ public class Board {
         return false;
     }
 
+    // Players don't actually have access to edit the gameboard; they may only submit their play
+    // Nevertheless, players need to be able to see the board. This gives a readable copy of the game state
     public Player[][] getView() {
         Player[][] view = new Player[boardData.length][];
         for (int i = 0; i < boardData.length; i++) view[i] = boardData[i].clone();

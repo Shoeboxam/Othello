@@ -9,6 +9,7 @@ public class AI_Greedy extends Player {
     private Logic logic = new Logic();
 
     public int[] play(Player[][] view, boolean allowDiagonal) {
+        // Collect all valid tiles in the candidates list
         int numCandidates = 0;
         int[][] full_candidates = new int[view.length * view[0].length][2];
 
@@ -19,9 +20,13 @@ public class AI_Greedy extends Player {
                 }
             }
         }
+
+        // Shuffle to prevent bias toward corners/edges of game board
+        // Only the first candidate found in the set of globally maximum candidates is returned
         int[][] candidates = Arrays.copyOfRange(full_candidates, 0, numCandidates);
         Collections.shuffle(Arrays.asList(candidates));
 
+        // Assess each candidate for fitness, and select the tile that turns the score the most.
         int[] choice = candidates[0];
         int fitness = 0;
 
@@ -29,10 +34,11 @@ public class AI_Greedy extends Player {
             Player [][] copy = new Player[view.length][view[0].length];
             for(int j = 0; j < view.length; j++) copy[j] = view[j].clone();
 
-            Player[][] peek = logic.setTile(copy, this, candidates[i], allowDiagonal);
+            // Modify a copy of the view of the board to determine what the board would look like if chosen
+            logic.setTile(copy, this, candidates[i], allowDiagonal);
 
             // Replace choice if candidate has better fitness
-            int candidate_fitness = getFitness(peek);
+            int candidate_fitness = getFitness(copy);
             if (candidate_fitness > fitness) {
                 fitness = candidate_fitness;
                 choice = candidates[i];

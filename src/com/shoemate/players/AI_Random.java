@@ -7,6 +7,7 @@ public class AI_Random extends Player {
     private Random rand = new Random();
 
     public int[] play(Player[][] view, boolean allowDiagonal) {
+        // Collect all valid tiles in the candidates list
         int numCandidates = 0;
         int[][] candidates = new int[view.length * view[0].length][2];
 
@@ -17,6 +18,8 @@ public class AI_Random extends Player {
                 }
             }
         }
+
+        // Choose and return one random acceptable tile
         return candidates[rand.nextInt(numCandidates)];
     }
 }
