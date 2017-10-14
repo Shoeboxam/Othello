@@ -1,10 +1,11 @@
 package com.shoemate;
 
+import com.shoemate.players.AI_Greedy;
 import com.shoemate.players.AI_Random;
-import com.shoemate.players.Computer;
 import com.shoemate.players.Person;
 import com.shoemate.players.Player;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.function.Function;
@@ -26,18 +27,33 @@ public class Game {
         gameboard = new Board(width, height);
 
         // Initialize players
-        int numPeople = getInt("Human players: ", (a) -> a>=0, "Human players must be non-negative.");
-        int numComputers =  getInt("Computer players: ", (a) -> a>=0, "Computer players must be non-negative.");
+        Player[] temp = new Player[8];
 
-        Player[] temp = new Player[numPeople + numComputers];
-        int idx = 0;
-        for (; idx < numPeople; idx++) {
-            temp[idx] = new Person();
+        boolean addPlayers = true;
+        int numPlayers = 0;
+        System.out.println("Select up to eight players.");
+        while ((addPlayers || numPlayers < 2) && numPlayers < 8) {
+            System.out.println("1. Add human            (Player " + Integer.toString(numPlayers + 1) + ")");
+            System.out.println("2. Add greedy computer  (AI " + Integer.toString(numPlayers + 1) + ")");
+            System.out.println("3. Add random computer  (AI " + Integer.toString(numPlayers + 1) + ")");
+            System.out.println("4. Start game!");
+            int selection = getInt("Selection: ", (a) -> a>=0 && a <=4, "Please enter a menu option: {1, 2, 3, 4}");
+
+            if (selection == 1) {
+                temp[numPlayers] = new Person();
+            } else if (selection == 2) {
+                temp[numPlayers] = new AI_Greedy();
+            } else if (selection == 3) {
+                temp[numPlayers] = new AI_Random();
+            } else if (selection == 4) {
+                addPlayers = false;
+            }
+            numPlayers++;
         }
-        for (; idx < numComputers + numPeople; idx++) {
-            temp[idx] = new AI_Random();
-        }
-        players = temp;
+        System.out.println(temp[0]);
+        players = Arrays.copyOfRange(temp, 0, numPlayers - 1).clone();
+
+        System.out.println(players[0]);
         gameboard.playerInit(players);
     }
 
@@ -46,7 +62,7 @@ public class Game {
 
         do {
             System.out.println(gameboard);
-            System.out.println(gameboard.getScore(players));
+            System.out.println("Score: " + gameboard.getScore(players));
             System.out.println(currentPlayer.toString() + " turn:");
             Player[][] view = gameboard.getView();
 
@@ -60,9 +76,10 @@ public class Game {
 
         } while (!gameboard.isFull(currentPlayer));
 
-        // Final score
+        System.out.println("---- Game Over ----");
         System.out.println(gameboard);
-        System.out.println(gameboard.getScore(players));
+        System.out.println("No moves found for " + currentPlayer.toString());
+        System.out.println("Final score: " + gameboard.getScore(players));
     }
 
     private int getInt(String prompt, Function<Integer, Boolean> check, String promptFail) {

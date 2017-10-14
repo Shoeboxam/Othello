@@ -63,12 +63,12 @@ public class Board {
         StringBuilder whole = new StringBuilder();
 
         whole.append(" ");
-        for (int j=0; j < boardData.length; j++) whole.append(j + 1);
+        for (int j=0; j < boardData.length; j++) whole.append((j + 1) % 10);
 
         for (int i = 0; i < boardData[0].length; i++) {
 
             StringBuilder row = new StringBuilder();
-            row.append(i + 1);
+            row.append((i + 1) % 10);
             for (int j=0; j < boardData.length; j++) {
                 row.append(boardData[j][i].getKey());
             }
@@ -95,7 +95,6 @@ public class Board {
             }
         }
         StringBuilder scores = new StringBuilder();
-        scores.append("Score: ");
 
         Iterator<Map.Entry<Player, Integer>> entries = scoreboard.entrySet().iterator();
         while (entries.hasNext()) {
