@@ -17,17 +17,21 @@ public class Logic {
             new int[] {-1, 1},
             new int[] {1, 1}};
 
-    public boolean isValid(Player[][] boardData, Player player, int[] play, boolean allowDiagonal) {
+    public boolean isValid(Player[][] boardData, Player player, int[] play, boolean allowDiagonal, boolean debug) {
         if (!(boardData[play[0]][play[1]] instanceof Unowned)) {
-            System.out.println("(" + Integer.toString(play[0] + 1) + "," + Integer.toString(play[1] + 1) + ") is already owned.");
+            if (debug) {
+                System.out.println("(" + Integer.toString(play[0] + 1) + "," + Integer.toString(play[1] + 1) + ") is already owned.");
+            }
             return false;
         }
 
         boolean hasNeighbor = false;
         for (int[] offset : cardinalOffset) {
             int[] neighbor = new int[] {play[0] + offset[0], play[1] + offset[1]};
-            if (exists(boardData, neighbor) && boardData[neighbor[0]][neighbor[1]].toString().equals(player.toString())){
-                System.out.println("Tiles may not be placed next to your own tile.");
+            if (exists(boardData, neighbor) && boardData[neighbor[0]][neighbor[1]] == player){
+                if (debug) {
+                    System.out.println("Tiles may not be placed next to your own tile.");
+                }
                 return false;
             }
             if (exists(boardData, neighbor) && !(boardData[neighbor[0]][neighbor[1]] instanceof Unowned)) hasNeighbor = true;
@@ -39,7 +43,7 @@ public class Logic {
                 if (!(boardData[neighbor[0]][neighbor[1]] instanceof Unowned)) hasNeighbor = true;
             }
         }
-        if (!hasNeighbor) {
+        if (!hasNeighbor && debug) {
             System.out.println("Tiles must be placed next to an opponents tile.");
         }
         return hasNeighbor;
@@ -70,14 +74,14 @@ public class Logic {
 
         if (!exists(boardData, neighbor)) return false;
         if (boardData[neighbor[0]][neighbor[1]] instanceof Unowned) return false;
-        if (boardData[neighbor[0]][neighbor[1]].toString().equals(player.toString())) return true;
+        if (boardData[neighbor[0]][neighbor[1]] == player) return true;
 
         return search(boardData, player, neighbor, offset);
     }
 
     private void replace(Player[][] boardData, Player player, int[] tile, int[] offset) {
         int[] neighbor = new int[] {tile[0] + offset[0], tile[1] + offset[1]};
-        if (boardData[neighbor[0]][neighbor[1]].toString().equals(player.toString())) return;
+        if (boardData[neighbor[0]][neighbor[1]] == player) return;
 
         boardData[neighbor[0]][neighbor[1]] = player;
         replace(boardData, player, neighbor, offset);

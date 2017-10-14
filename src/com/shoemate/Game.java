@@ -41,16 +41,27 @@ public class Game {
     }
 
     public void start() {
-        while (!gameboard.isFull()) {
-            System.out.println(gameboard);
+        Player currentPlayer = players[0];
 
-            Player currentPlayer = players[iteration % players.length];
+        do {
+            System.out.println(gameboard);
+            System.out.println(gameboard.getScore(players));
+            System.out.println(currentPlayer.toString() + " turn:");
             Player[][] view = gameboard.getView();
 
             // Repeatedly ask for a play until a valid play is found
             while (!gameboard.takeTurn(currentPlayer, currentPlayer.play(view), allowDiagonal));
+
+            // Increment player
             iteration++;
-        }
+            currentPlayer = players[iteration % players.length];
+            System.out.println();
+
+        } while (!gameboard.isFull(currentPlayer));
+
+        // Final score
+        System.out.println(gameboard);
+        System.out.println(gameboard.getScore(players));
     }
 
     private int getInt(String prompt, Function<Integer, Boolean> check, String promptFail) {
